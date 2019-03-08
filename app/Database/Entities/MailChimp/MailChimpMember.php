@@ -35,7 +35,7 @@ class MailChimpMember extends MailChimpEntity
     private $status;
 
     /**
-     * @ORM\Column(name="mail_chimp_id", type="string", nullable=true)
+     * @ORM\Column(name="mailchimp_id", type="string", nullable=true)
      *
      * @var string
      */
@@ -150,7 +150,9 @@ class MailChimpMember extends MailChimpEntity
     {
         return [
             'email_address' => 'required|string',
-            'status' => 'nullable|string|in:subscribed,unsubscribed,cleaned,pending'
+            'status' => 'nullable|string|in:subscribed,unsubscribed,cleaned,pending',
+            'mail_chimp_id' => 'nullable|string',
+            'list_id' => 'required|string',
         ];
     }
 
