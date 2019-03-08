@@ -18,7 +18,7 @@ class MailChimpMember extends MailChimpEntity
      *
      * @var string
      */
-    private $listId;
+    private $memberId;
 
     /**
      * @ORM\Column(name="email_address", type="string")
@@ -40,6 +40,47 @@ class MailChimpMember extends MailChimpEntity
      * @var string
      */
     private $mailChimpId;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="\App\Database\Entities\MailChimp\MailChimpList")
+     * @ORM\JoinColumn(name="list_id", referencedColumnName="id")
+     *
+     * @var int
+     */
+    private $listId;
+
+    /**
+     * @return string
+     */
+    public function getMemberId(): string
+    {
+        return $this->memberId;
+    }
+
+    /**
+     * @param string $memberId
+     */
+    public function setMemberId(string $memberId): void
+    {
+        $this->memberId = $memberId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getListId(): int
+    {
+        return $this->listId;
+    }
+
+    /**
+     * @param int $listId
+     */
+    public function setListId(int $listId): void
+    {
+        $this->listId = $listId;
+    }
 
 
     /**
@@ -87,7 +128,7 @@ class MailChimpMember extends MailChimpEntity
      */
     public function getId(): ?string
     {
-        return $this->listId;
+        return $this->memberId;
     }
 
     /**
