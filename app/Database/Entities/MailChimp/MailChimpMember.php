@@ -35,6 +35,14 @@ class MailChimpMember extends MailChimpEntity
     private $status;
 
     /**
+     * @ORM\Column(name="mail_chimp_id", type="string", nullable=true)
+     *
+     * @var string
+     */
+    private $mailChimpId;
+
+
+    /**
      * @param string $emailAddress
      *
      * @return MailChimpMember
@@ -59,6 +67,20 @@ class MailChimpMember extends MailChimpEntity
     }
 
     /**
+     * Set mailchimp id of the list.
+     *
+     * @param string $mailChimpId
+     *
+     * @return \App\Database\Entities\MailChimp\MailChimpMember
+     */
+    public function setMailChimpId(string $mailChimpId): MailChimpMember
+    {
+        $this->mailChimpId = $mailChimpId;
+
+        return $this;
+    }
+
+    /**
      * Get id.
      *
      * @return null|string
@@ -66,6 +88,16 @@ class MailChimpMember extends MailChimpEntity
     public function getId(): ?string
     {
         return $this->listId;
+    }
+
+    /**
+     * Get mailchimp id of the list.
+     *
+     * @return null|string
+     */
+    public function getMailChimpId(): ?string
+    {
+        return $this->mailChimpId;
     }
 
     /**
