@@ -107,5 +107,47 @@ class MembersController extends Controller
         return $this->successfulResponse($membersArray);
     }
 
+    /**
+     * Remove MailChimp member from a list.
+     *
+     * @param string $listId
+     * @param string $memberId
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function remove(string $listId, string $memberId): JsonResponse
+    {
+        /** @var \App\Database\Entities\MailChimp\MailChimpList|null $list */
+        $list = $this->entityManager->getRepository(MailChimpList::class)->find($listId);
+
+        /** @var \App\Database\Entities\MailChimp\MailChimpMember|null $member */
+        $member = $this->entityManager->getRepository(MailChimpMember::class)->find($memberId);
+
+        if ($list === null) {
+            return $this->errorResponse(
+                ['message' => \sprintf('MailChimpList[%s] not found', $listId)],
+                404
+            );
+        }
+
+        if ($member === null) {
+            return $this->errorResponse(
+                ['message' => \sprintf('MailChimpMember[%s] not found', $listId)],
+                404
+            );
+        }
+
+        try {
+            // Remove list from database
+            $this->removeEntity($member);
+            // Remove list from MailChimp
+            $this->mailChimp->delete(\sprintf('lists/%s/members/%s', $list->getMailChimpId(), $member->getMailChimpId()));
+        } catch (Exception $exception) {
+            return $this->errorResponse(['message' => $exception->getMessage()]);
+        }
+
+        return $this->successfulResponse([]);
+    }
+
 
 }
