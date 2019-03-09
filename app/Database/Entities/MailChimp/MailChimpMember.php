@@ -41,10 +41,8 @@ class MailChimpMember extends MailChimpEntity
      */
     private $mailChimpId;
 
-//@ORM\ManyToOne(targetEntity="\App\Database\Entities\MailChimp\MailChimpList")
-//@ORM\JoinColumn(name="list_id", referencedColumnName="id")
     /**
-     * @ORM\Column(name="list_id", type="string")
+     * @ORM\Column(name="list_id", type="string", nullable=true)
      *
      * @var string
      */
@@ -150,9 +148,9 @@ class MailChimpMember extends MailChimpEntity
     {
         return [
             'email_address' => 'required|string',
-            'status' => 'nullable|string|in:subscribed,unsubscribed,cleaned,pending',
+            'status' => 'required|string|in:subscribed,unsubscribed,cleaned,pending',
             'mail_chimp_id' => 'nullable|string',
-            'list_id' => 'required|string',
+            'list_id' => 'nullable|string',
         ];
     }
 

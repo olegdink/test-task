@@ -37,6 +37,7 @@ class MembersController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
+     * @param string $listId
      * @return \Illuminate\Http\JsonResponse
      */
     public function create(Request $request, string $listId): JsonResponse
@@ -53,6 +54,7 @@ class MembersController extends Controller
 
         // Instantiate entity
         $member = new MailChimpMember($request->all());
+        $member->setListId($list->getId());
         // Validate entity
         $validator = $this->getValidationFactory()->make($member->toMailChimpArray(), $member->getValidationRules());
 
@@ -68,7 +70,8 @@ class MembersController extends Controller
             // Save into DB
             $this->saveEntity($member);
             // Save into MailChimp
-            $response = $this->mailChimp->post('lists/' . $list->getMailChimpId() . '/members', $member->toMailChimpArray());
+            $response = $this->mailChimp->post('lists/' . $list->getMailChimpId() . '/members',
+                array_merge($member->toMailChimpArray(), ['list_id' => $list->getMailChimpId()]));
             // Set MailChimp id on the member and save member into DB
             $this->saveEntity($member->setMailChimpId($response->get('id')));
         } catch (Exception $exception) {
