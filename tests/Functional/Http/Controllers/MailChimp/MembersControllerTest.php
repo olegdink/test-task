@@ -91,6 +91,20 @@ class MembersControllerTest extends WithDatabaseTestCase
 
         $members = $this->entityManager->getRepository(MailChimpMember::class)->findAll();
         var_dump($members[0]->getId() . ' | ' . $members[0]->getMailChimpId());
+
+        // Update Member
+
+        $this->put('/mailchimp/lists/'.$lists[0]->getId().'/members/'.$members[0]->getId(), [
+            "email_address" => $faker->email,
+            "status" => "subscribed"
+        ]);
+        $content = \json_decode($this->response->content(), true);
+        $this->assertResponseOk();
+
+        $members = $this->entityManager->getRepository(MailChimpMember::class)->findAll();
+        var_dump($members);
+
+
     }
 
 
