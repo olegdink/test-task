@@ -42,10 +42,13 @@ class MembersControllerTest extends WithDatabaseTestCase
 
     public function testCreateMemberSuccessfully(): void
     {
+
+        $faker = Faker\Factory::create();
+
         // Create List
 
         $listData = [
-            'name' => '2New list for new member',
+            'name' => $faker->name . ' list',
             'permission_reminder' => 'You signed up for updates on Greeks economy.',
             'email_type_option' => false,
             'contact' => [
@@ -80,7 +83,7 @@ class MembersControllerTest extends WithDatabaseTestCase
         // Create Member
 
         $this->post('/mailchimp/lists/'.$lists[0]->getId().'/members', [
-            "email_address" => "karapuz@dxn.ru",
+            "email_address" => $faker->email,
         	"status" => "subscribed"
         ]);
         $content = \json_decode($this->response->content(), true);
