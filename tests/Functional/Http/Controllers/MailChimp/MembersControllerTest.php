@@ -78,7 +78,7 @@ class MembersControllerTest extends WithDatabaseTestCase
         $this->assertResponseOk();
 
         $lists = $this->entityManager->getRepository(MailChimpList::class)->findAll();
-        var_dump($lists[0]->getId() . ' | ' . $lists[0]->getMailChimpId());
+        //var_dump($lists[0]->getId() . ' | ' . $lists[0]->getMailChimpId());
 
         // Create Member
 
@@ -90,7 +90,7 @@ class MembersControllerTest extends WithDatabaseTestCase
         $this->assertResponseOk();
 
         $members = $this->entityManager->getRepository(MailChimpMember::class)->findAll();
-        var_dump($members[0]->getId() . ' | ' . $members[0]->getMailChimpId());
+        //var_dump($members[0]->getId() . ' | ' . $members[0]->getMailChimpId());
 
         // Update Member
 
@@ -104,6 +104,14 @@ class MembersControllerTest extends WithDatabaseTestCase
         $members = $this->entityManager->getRepository(MailChimpMember::class)->findAll();
         var_dump($members);
 
+        // Delete Member
+
+        $this->delete('/mailchimp/lists/'.$lists[0]->getId().'/members/'.$members[0]->getId());
+        $content = \json_decode($this->response->content(), true);
+        $this->assertResponseOk();
+
+        $members = $this->entityManager->getRepository(MailChimpMember::class)->findAll();
+        var_dump($members);
 
     }
 

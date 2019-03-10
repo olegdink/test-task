@@ -140,6 +140,14 @@ class MailChimpMember extends MailChimpEntity
     }
 
     /**
+     * @return string
+     */
+    public function getEmailAddress(): string
+    {
+        return $this->emailAddress;
+    }
+
+    /**
      * Get validation rules for mailchimp entity.
      *
      * @return array
