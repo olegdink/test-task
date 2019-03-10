@@ -44,8 +44,11 @@ class MembersControllerTest extends WithDatabaseTestCase
         ];
 
         $this->post('/mailchimp/lists/', $listData);
-        $this->response->content();
+        $content = \json_decode($this->response->getContent(), true);
         $this->assertResponseOk();
+        self::assertArrayHasKey('mail_chimp_id', $content);
+        self::assertNotNull($content['mail_chimp_id']);
+
 
         $lists = $this->entityManager->getRepository(MailChimpList::class)->findAll();
 
@@ -55,8 +58,11 @@ class MembersControllerTest extends WithDatabaseTestCase
             "email_address" => $faker->email,
         	"status" => "subscribed"
         ]);
-        $this->response->content();
+        $content = \json_decode($this->response->getContent(), true);
         $this->assertResponseOk();
+        self::assertArrayHasKey('mail_chimp_id', $content);
+        self::assertNotNull($content['mail_chimp_id']);
+
 
         $members = $this->entityManager->getRepository(MailChimpMember::class)->findAll();
 
@@ -66,8 +72,14 @@ class MembersControllerTest extends WithDatabaseTestCase
             "email_address" => $faker->email,
             "status" => "subscribed"
         ]);
-        $this->response->content();
+        $content = \json_decode($this->response->getContent(), true);
         $this->assertResponseOk();
+        self::assertArrayHasKey('mail_chimp_id', $content);
+        self::assertNotNull($content['mail_chimp_id']);
+        self::assertArrayHasKey('email_address', $content);
+        self::assertArrayHasKey('list_id', $content);
+        self::assertArrayHasKey('member_id', $content);
+
 
         $members = $this->entityManager->getRepository(MailChimpMember::class)->findAll();
 
