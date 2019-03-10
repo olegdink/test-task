@@ -77,6 +77,12 @@ class MembersControllerTest extends WithDatabaseTestCase
         $this->response->content();
         $this->assertResponseOk();
 
+        // Delete list
+
+        $this->delete('/mailchimp/lists/'.$lists[0]->getId());
+        $this->response->content();
+        $this->assertResponseOk();
+
     }
 
 
