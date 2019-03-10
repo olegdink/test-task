@@ -10,37 +10,7 @@ use Tests\App\TestCases\WithDatabaseTestCase;
 class MembersControllerTest extends WithDatabaseTestCase
 {
 
-    /**
-     * @param array $data
-     *
-     * @return MailChimpList
-     */
-    protected function createList(array $data): MailChimpList
-    {
-        $list = new MailChimpList($data);
-
-        $this->entityManager->persist($list);
-        $this->entityManager->flush();
-
-        return $list;
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return MailChimpMember
-     */
-    protected function createMember(array $data): MailChimpMember
-    {
-        $member = new MailChimpMember($data);
-
-        $this->entityManager->persist($member);
-        $this->entityManager->flush();
-
-        return $member;
-    }
-
-    public function testCreateMemberSuccessfully(): void
+    public function testCRUDMemberSuccessfully(): void
     {
 
         $faker = Faker\Factory::create();
@@ -74,11 +44,10 @@ class MembersControllerTest extends WithDatabaseTestCase
         ];
 
         $this->post('/mailchimp/lists/', $listData);
-        $content = \json_decode($this->response->content(), true);
+        $this->response->content();
         $this->assertResponseOk();
 
         $lists = $this->entityManager->getRepository(MailChimpList::class)->findAll();
-        //var_dump($lists[0]->getId() . ' | ' . $lists[0]->getMailChimpId());
 
         // Create Member
 
@@ -86,11 +55,10 @@ class MembersControllerTest extends WithDatabaseTestCase
             "email_address" => $faker->email,
         	"status" => "subscribed"
         ]);
-        $content = \json_decode($this->response->content(), true);
+        $this->response->content();
         $this->assertResponseOk();
 
         $members = $this->entityManager->getRepository(MailChimpMember::class)->findAll();
-        //var_dump($members[0]->getId() . ' | ' . $members[0]->getMailChimpId());
 
         // Update Member
 
@@ -98,20 +66,16 @@ class MembersControllerTest extends WithDatabaseTestCase
             "email_address" => $faker->email,
             "status" => "subscribed"
         ]);
-        $content = \json_decode($this->response->content(), true);
+        $this->response->content();
         $this->assertResponseOk();
 
         $members = $this->entityManager->getRepository(MailChimpMember::class)->findAll();
-        var_dump($members);
 
         // Delete Member
 
         $this->delete('/mailchimp/lists/'.$lists[0]->getId().'/members/'.$members[0]->getId());
-        $content = \json_decode($this->response->content(), true);
+        $this->response->content();
         $this->assertResponseOk();
-
-        $members = $this->entityManager->getRepository(MailChimpMember::class)->findAll();
-        var_dump($members);
 
     }
 
